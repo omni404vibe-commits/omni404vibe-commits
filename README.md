@@ -1,14 +1,11 @@
 <div align="center">
 
-<!-- Animated banner -->
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0a0d12,50:00e5a0,100:0a0d12&height=200&section=header&text=OMNI%20VIBE&fontSize=60&fontColor=ffffff&fontAlignY=38&desc=Web%20%26%20Automatización&descAlignY=58&descSize=18&animation=fadeIn" width="100%"/>
 
-<!-- Typing animation -->
 <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=22&pause=1000&color=00E5A0&center=true&vCenter=true&width=600&lines=Desarrollo+Web+Profesional;Automatización+de+Procesos;Landing+Pages+que+Convierten;Sistemas+Web+a+Medida;Disponible+para+Proyectos+%E2%9C%93" alt="Typing SVG" />
 
 <br/>
 
-<!-- Status badge -->
 ![Status](https://img.shields.io/badge/STATUS-DISPONIBLE-00e5a0?style=for-the-badge&labelColor=0a0d12)
 ![WhatsApp](https://img.shields.io/badge/WhatsApp-849--431--4342-25d366?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=0a0d12)
 [![Instagram](https://img.shields.io/badge/Instagram-omn.ivibe-dd2a7b?style=for-the-badge&logo=instagram&logoColor=white&labelColor=0a0d12)](https://instagram.com/omn.ivibe)
