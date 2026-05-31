@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omni Vibe — Desarrollo Web & Automatización</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0d12;
+  --surface:#0f1318;
+  --surface2:#141921;
+  --border:#1e2730;
+  --green:#00e5a0;
+  --green-dim:#00b880;
+  --green-muted:#00e5a022;
+  --amber:#f5a623;
+  --blue:#4fc3f7;
+  --red:#ff5f6d;
+  --text:#c9d4e0;
+  --text-dim:#5a6a7a;
+  --mono:'JetBrains Mono',monospace;
+  --display:'Rajdhani',sans-serif;
+}
+html, body {
+  height:100%;
+}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--mono);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2rem 1rem;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(0,229,160,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,160,0.025) 1px, transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+  z-index:0;
+}
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:repeating-linear-gradient(
+    0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px
+  );
+  pointer-events:none;
+  z-index:0;
+}
+.hero{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.5rem;
+  width:100%;
+  max-width:900px;
+  position:relative;
+  z-index:1;
+}
+
+/* TERMINAL */
+.terminal{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 0 40px rgba(0,229,160,0.05),inset 0 1px 0 rgba(255,255,255,0.03);
+}
+.term-bar{
+  background:var(--surface2);
+  padding:.6rem 1rem;
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  border-bottom:1px solid var(--border);
+}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot.r{background:var(--red)}
+.dot.y{background:var(--amber)}
+.dot.g{background:var(--green-dim)}
+.term-title{flex:1;text-align:center;font-size:11px;color:var(--text-dim);letter-spacing:.08em}
+.term-body{padding:1.25rem 1.25rem 1.5rem;font-size:12.5px;line-height:1.9;min-height:280px}
+.line{display:flex;align-items:flex-start;gap:.5rem;opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}
+.line.show{opacity:1;transform:none}
+.prompt{color:var(--green);flex-shrink:0;user-select:none}
+.cmd{color:var(--text)}
+.output{color:var(--text-dim);font-size:11.5px}
+.check{color:var(--green)}
+.warn{color:var(--amber)}
+.info{color:var(--blue)}
+.cursor{
+  display:inline-block;width:8px;height:14px;
+  background:var(--green);vertical-align:middle;
+  margin-left:2px;animation:blink 1s step-end infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* PANEL */
+.panel{display:flex;flex-direction:column;gap:1rem}
+.id-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1.5rem;
+  position:relative;
+  overflow:hidden;
+}
+.id-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+}
+.id-label{font-size:10px;letter-spacing:.15em;color:var(--text-dim);text-transform:uppercase;margin-bottom:.6rem}
+.id-name{
+  font-family:var(--display);
+  font-size:2.8rem;
+  font-weight:700;
+  letter-spacing:.12em;
+  line-height:1;
+  margin-bottom:.5rem;
+  text-transform:uppercase;
+  background:linear-gradient(120deg,#ffffff 30%,var(--green) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.id-role{font-size:11.5px;color:var(--green);letter-spacing:.05em}
+.status-dot{
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--green);margin-right:.4rem;
+  animation:pulse 2s ease-in-out infinite;
+  box-shadow:0 0 6px var(--green);
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
+
+.services{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.tag{
+  font-size:10px;padding:.25rem .6rem;border-radius:4px;
+  border:1px solid var(--border);color:var(--text-dim);
+  letter-spacing:.05em;opacity:0;transform:scale(.9);
+  transition:opacity .3s,transform .3s,border-color .2s,color .2s;
+}
+.tag.show{opacity:1;transform:scale(1)}
+.tag:hover{border-color:var(--green-dim);color:var(--green)}
+
+/* MÉTRICAS */
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.metric{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:.9rem 1rem;
+  position:relative;overflow:hidden;cursor:default;
+  transition:border-color .2s,background .2s;
+}
+.metric:hover{border-color:var(--green-dim);background:var(--surface2)}
+.metric-val{
+  font-family:var(--display);font-size:1.6rem;
+  font-weight:700;color:#fff;line-height:1;margin-bottom:.3rem;
+}
+.metric-val span{color:var(--green);font-size:1rem}
+.metric-label{font-size:10px;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase}
+.metric-bar{position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--green-muted)}
+.metric-bar-fill{height:100%;background:var(--green);width:0%;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+/* BOTONES */
+.cta-row{display:flex;gap:.75rem;align-items:center;padding-top:.5rem}
+.btn{
+  font-family:var(--mono);font-size:12px;padding:.7rem 1.2rem;
+  border-radius:6px;border:none;cursor:pointer;letter-spacing:.06em;
+  transition:all .2s;display:flex;align-items:center;
+  gap:.5rem;text-decoration:none;
+}
+.btn-primary{
+  background:#25d366;color:#0a0d12;font-weight:700;
+  box-shadow:0 0 20px rgba(37,211,102,0.25);
+}
+.btn-primary:hover{
+  background:#2fec72;
+  box-shadow:0 0 30px rgba(37,211,102,0.45);
+  transform:translateY(-1px);
+}
+.btn-insta{
+  background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af,#515bd4);
+  color:#fff;font-weight:700;
+  box-shadow:0 0 20px rgba(221,42,123,0.2);
+}
+.btn-insta:hover{
+  box-shadow:0 0 30px rgba(221,42,123,0.4);
+  transform:translateY(-1px);
+  filter:brightness(1.1);
+}
+.btn-primary:active,.btn-insta:active{transform:translateY(0)}
+.wa-icon{width:15px;height:15px;fill:#0a0d12}
+.ig-icon{width:15px;height:15px;fill:#fff}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  .hero{grid-template-columns:1fr}
+  .id-name{font-size:2.2rem}
+  .cta-row{flex-direction:column;align-items:stretch}
+  .btn{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+
+  <!-- TERMINAL -->
+  <div class="terminal">
+    <div class="term-bar">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+      <span class="term-title">omni-vibe.sh — bash</span>
+    </div>
+    <div class="term-body" id="term"></div>
+  </div>
+
+  <!-- PANEL -->
+  <div class="panel">
+    <div class="id-card">
+      <div class="id-label">// Estudio Digital</div>
+      <div class="id-name">Omni Vibe</div>
+      <div class="id-role">
+        <span class="status-dot"></span>
+        <span id="role-text">Inicializando...</span>
+      </div>
+      <div class="services" id="tags">
+        <span class="tag">Web</span>
+        <span class="tag">Automatización</span>
+        <span class="tag">Backend</span>
+        <span class="tag">Landing Pages</span>
+        <span class="tag">Sistemas</span>
+        <span class="tag">Disponible ✓</span>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-val" id="m1">0<span>+</span></div>
+        <div class="metric-label">Clientes</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="b1"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-val" id="m2">0<span>+</span></div>
+        <div class="metric-label">Proyectos</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="b2"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-val" id="m3">0<span>h</span></div>
+        <div class="metric-label">Hrs ahorradas</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="b3"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-val" id="m4">100<span>%</span></div>
+        <div class="metric-label">Entregas a tiempo</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="b4"></div></div>
+      </div>
+    </div>
+
+    <div class="cta-row" id="cta" style="opacity:0;transition:opacity .5s">
+      <!-- WhatsApp -->
+      <a class="btn btn-primary" href="https://wa.me/18494314342" target="_blank" rel="noopener">
+        <svg class="wa-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        WhatsApp
+      </a>
+      <!-- Instagram -->
+      <a class="btn btn-insta" href="https://instagram.com/omn.ivibe" target="_blank" rel="noopener">
+        <svg class="ig-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+        Instagram
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+const term = document.getElementById('term');
+
+const lines = [
+  {type:'cmd', prompt:'$', text:'./inicializar-portfolio.sh'},
+  {type:'out', cls:'info',  text:'[INFO] Cargando módulos...'},
+  {type:'out', cls:'check', text:'[OK]   Node.js  ─  v20.11'},
+  {type:'out', cls:'check', text:'[OK]   Python   ─  v3.12'},
+  {type:'out', cls:'check', text:'[OK]   Git      ─  sincronizado'},
+  {type:'cmd', prompt:'$', text:'cat servicios.txt'},
+  {type:'out', cls:'check', text:'[✓]   Landing Pages'},
+  {type:'out', cls:'check', text:'[✓]   Automatizaciones'},
+  {type:'out', cls:'check', text:'[✓]   Sistemas Web'},
+  {type:'out', cls:'check', text:'[✓]   Bots & Scrapers'},
+  {type:'cmd', prompt:'$', text:'status --disponibilidad'},
+  {type:'out', cls:'warn',  text:'[●]   DISPONIBLE para proyectos'},
+  {type:'cursor'},
+];
+
+let i = 0;
+function nextLine() {
+  if (i >= lines.length) return;
+  const l = lines[i++];
+  const div = document.createElement('div');
+  div.className = 'line';
+  if (l.type === 'cursor') {
+    div.innerHTML = `<span class="prompt">$</span><span class="cmd"><span class="cursor"></span></span>`;
+  } else if (l.type === 'cmd') {
+    div.innerHTML = `<span class="prompt">${l.prompt}</span><span class="cmd" id="cmd-${i}"></span>`;
+  } else {
+    div.innerHTML = `<span class="output ${l.cls}">${l.text}</span>`;
+  }
+  term.appendChild(div);
+  requestAnimationFrame(() => div.classList.add('show'));
+  if (l.type === 'cmd') {
+    typeText(div.querySelector(`#cmd-${i}`), l.text, () => setTimeout(nextLine, 180));
+  } else {
+    setTimeout(nextLine, l.type === 'cursor' ? 0 : 140);
+  }
+}
+
+function typeText(el, text, cb) {
+  let j = 0;
+  const iv = setInterval(() => {
+    if (j <= text.length) { el.textContent = text.slice(0, j++); }
+    else { clearInterval(iv); cb && cb(); }
+  }, 38);
+}
+
+function animCount(el, target, suffix, dur) {
+  const start = Date.now();
+  const iv = setInterval(() => {
+    const p = Math.min((Date.now() - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.innerHTML = Math.round(ease * target) + `<span>${suffix}</span>`;
+    if (p >= 1) clearInterval(iv);
+  }, 16);
+}
+
+const roles = ['Desarrollo Web', 'Automatización', 'Sistemas Digitales', 'Disponible ✓'];
+let ri = 0, rj = 0, deleting = false;
+const roleEl = document.getElementById('role-text');
+
+function typeRole() {
+  const word = roles[ri];
+  if (!deleting) {
+    roleEl.textContent = word.slice(0, ++rj);
+    if (rj >= word.length) { deleting = true; setTimeout(typeRole, 1800); return; }
+  } else {
+    roleEl.textContent = word.slice(0, --rj);
+    if (rj <= 0) { deleting = false; ri = (ri + 1) % roles.length; setTimeout(typeRole, 300); return; }
+  }
+  setTimeout(typeRole, deleting ? 45 : 70);
+}
+
+setTimeout(() => nextLine(), 400);
+
+setTimeout(() => {
+  typeRole();
+  document.querySelectorAll('.tag').forEach((t, idx) => {
+    setTimeout(() => t.classList.add('show'), idx * 100);
+  });
+}, 1800);
+
+setTimeout(() => {
+  animCount(document.getElementById('m1'), 12, '+', 1200);
+  animCount(document.getElementById('m2'), 8,  '+', 1400);
+  animCount(document.getElementById('m3'), 320, 'h', 1600);
+  animCount(document.getElementById('m4'), 100, '%', 1000);
+  ['b1','b2','b3','b4'].forEach((id, k) => {
+    setTimeout(() => {
+      document.getElementById(id).style.width = ['80%','60%','95%','100%'][k];
+    }, k * 150);
+  });
+  document.getElementById('cta').style.opacity = '1';
+}, 2600);
+</script>
+
+</body>
+</html>
