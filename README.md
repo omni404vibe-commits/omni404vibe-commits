@@ -1,5 +1,27 @@
 <div align="center">
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0a0d12,50:00e5a0,100:0a0d12&height=200&section=header&text=OMNI%20VIBE&fontSize=60&fontColor=ffffff&fontAlignY=38&desc=Desarrollo+Web+%26+Automatización&descAlignY=58&descSize=18&animation=fadeIn" width="100%"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 200" width="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0d12"/>
+      <stop offset="50%" style="stop-color:#003d2b"/>
+      <stop offset="100%" style="stop-color:#0a0d12"/>
+    </linearGradient>
+    <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00e5a0;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#00e5a0;stop-opacity:0"/>
+    </linearGradient>
+    <linearGradient id="wave2" x1="100%" y1="0%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#00e5a0;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#00e5a0;stop-opacity:0"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="200" fill="url(#bg)"/>
+  <ellipse cx="150" cy="200" rx="300" ry="80" fill="url(#wave1)"/>
+  <ellipse cx="750" cy="200" rx="300" ry="80" fill="url(#wave2)"/>
+  <rect x="0" y="185" width="900" height="3" fill="#00e5a0" opacity="0.3"/>
+  <text x="450" y="105" font-family="monospace" font-size="52" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="8">OMNI VIBE</text>
+  <text x="450" y="145" font-family="monospace" font-size="16" fill="#00e5a0" text-anchor="middle" letter-spacing="3">Web &amp; Automatización</text>
+</svg>
 </div>
 
 ---
@@ -74,10 +96,25 @@ Los extraemos y organizamos automáticamente, listos para usar.
   <img src="https://img.shields.io/badge/Seguir%20en%20Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" />
 </a>
 &nbsp;
+<a href="https://omni404vibe-commits.github.io/omni-vibe/proyectos">
+  <img src="https://img.shields.io/badge/🚀%20Ver%20Proyectos-00e5a0?style=for-the-badge&logoColor=black" />
+</a>
+&nbsp;
 <a href="https://omni404vibe-commits.github.io/omni-vibe/">
-  <img src="https://img.shields.io/badge/Ver%20Portfolio-00e5a0?style=for-the-badge&logo=github&logoColor=black" />
+  <img src="https://img.shields.io/badge/Ver%20Portfolio-ffffff?style=for-the-badge&logo=github&logoColor=black" />
 </a>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0a0d12,50:00e5a0,100:0a0d12&height=100&section=footer" width="100%"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 80" width="100%">
+  <defs>
+    <linearGradient id="footerbg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0a0d12"/>
+      <stop offset="50%" style="stop-color:#003d2b"/>
+      <stop offset="100%" style="stop-color:#0a0d12"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="80" fill="url(#footerbg)"/>
+  <rect x="0" y="0" width="900" height="3" fill="#00e5a0" opacity="0.4"/>
+  <text x="450" y="48" font-family="monospace" font-size="13" fill="#00e5a0" text-anchor="middle" opacity="0.7">© OMNI VIBE · omn.ivibe</text>
+</svg>
 
 </div>
